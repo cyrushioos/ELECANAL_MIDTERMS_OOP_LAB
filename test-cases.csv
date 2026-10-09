@@ -1,0 +1,25 @@
+Test,Feature,Input,Expected result,Actual result,Pass/Fail
+1,Attendee account/login,"Reyes; Ana; 2005-05-01; secret1",Username and login succeed,Username and login succeeded,Pass
+2,Role polymorphism,Attendee and EventManager objects,Distinct role names via Account references,Attendee and Event Manager returned,Pass
+3,Duplicate username,"reyes,ana after Reyes,Ana",Reject case-insensitive duplicate,Duplicate rejected,Pass
+4,Incorrect password,"lead; wrong",Login fails,Login returned no account,Pass
+5,Minimum capacity,"Age 0; capacity 1",Event created with boundary values,Event created with boundary values,Pass
+6,Empty title,Whitespace title,Reject event,Event rejected,Pass
+7,Invalid capacity,Capacity 0,Reject event,Event rejected,Pass
+8,Past event,2025-01-01 09:00 with fixed 2026 clock,Reject past start,Past start rejected,Pass
+9,Minimum age boundary,"Age exactly 18 on event day; minimum 18",Accept registration,Registration accepted,Pass
+10,Below minimum age,"Age 17 on event day; minimum 18",Reject registration,Registration rejected,Pass
+11,Duplicate registration,Same attendee registers twice,Second attempt rejected and count stays 1,Second attempt rejected and count stayed 1,Pass
+12,Capacity reached,"Capacity 1; second attendee",Reject second attendee,Second attendee rejected,Pass
+13,Cancel and repeat,"Register; cancel; register again",Count changes 1 to 0 to 1,Count changed 1 to 0 to 1,Pass
+14,Registration label,Reyes Ana joins School Fair,"Reyes,Ana-School Fair",Correct label returned,Pass
+15,Canceled event,Attempt registration after manager cancels,Reject registration,Registration rejected,Pass
+16,Started event,Attempt registration after start,Reject registration,Registration rejected,Pass
+17,Event ownership,Other manager edits event,Reject unauthorized edit,Edit rejected,Pass
+18,Capacity edit boundary,Two registrations then capacity 1,Reject reduction,Reduction rejected,Pass
+19,Eligibility change after registration,Change event start and minimum age,Reject change,Change rejected,Pass
+20,Multiple events,One attendee joins two events,Two registrations under one account,Two registrations under one account,Pass
+21,Incorrect menu selection,9 at main menu,Show invalid choice and continue,Invalid choice shown and main menu repeated,Pass
+22,Empty required input,Blank manager username then lead,Show error and retry username,Error shown and account created after retry,Pass
+23,Upper boundary,"Minimum age 120; capacity 1000",Accept valid upper and reasonable capacity values,Event created with both values,Pass
+24,Above maximum age rule,Minimum age 121,Reject event,Event rejected,Pass

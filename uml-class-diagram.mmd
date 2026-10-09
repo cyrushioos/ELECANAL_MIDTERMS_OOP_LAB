@@ -1,0 +1,76 @@
+classDiagram
+    class Account {
+      <<abstract>>
+      -int id
+      -String username
+      -String password
+      +getId() int
+      +getUsername() String
+      +matchesPassword(String) boolean
+      +getRoleName()* String
+    }
+    class Attendee {
+      -String lastName
+      -String firstName
+      -LocalDate birthDate
+      +ageOn(LocalDate) int
+      +getRoleName() String
+    }
+    class EventManager {
+      -String displayName
+      +getRoleName() String
+    }
+    class Event {
+      -int id
+      -int managerId
+      -String title
+      -LocalDateTime start
+      -int minimumAge
+      -int capacity
+      -EventStatus status
+      +update(...) void
+      +cancel() void
+    }
+    class Registration {
+      -int attendeeId
+      -int eventId
+      -boolean active
+      +cancel() void
+      +label(Attendee, Event) String
+    }
+    class RegistrationPolicy {
+      <<interface>>
+      +rejectionReason(Attendee, Event, List, LocalDateTime) String
+    }
+    class StandardRegistrationPolicy {
+      +rejectionReason(Attendee, Event, List, LocalDateTime) String
+    }
+    class AccountStore {
+      -List~Account~ accounts
+      +addAttendee(...) Attendee
+      +addManager(...) EventManager
+      +login(...) Account
+    }
+    class EventService {
+      -List~Event~ events
+      +create(...) Event
+      +edit(...) void
+      +cancel(...) void
+    }
+    class RegistrationService {
+      -List~Registration~ registrations
+      -RegistrationPolicy policy
+      +register(Attendee, Event) Registration
+      +cancel(Attendee, Event) void
+      +countFor(int) int
+    }
+    Account <|-- Attendee
+    Account <|-- EventManager
+    RegistrationPolicy <|.. StandardRegistrationPolicy
+    AccountStore "1" o-- "0..*" Account
+    EventService "1" o-- "0..*" Event
+    RegistrationService "1" o-- "0..*" Registration
+    RegistrationService "1" --> "1" RegistrationPolicy
+    EventManager "1" --> "0..*" Event : owns
+    Attendee "1" --> "0..*" Registration : makes
+    Event "1" --> "0..*" Registration : receives
